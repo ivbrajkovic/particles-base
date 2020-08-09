@@ -36,14 +36,13 @@ window.addEventListener("mousemove", (e) => {
 });
 
 class Particle {
-  constructor(x, y, size = 3, distanceFromMouse = 100) {
+  constructor(x, y, size = 3) {
     this.x = x;
     this.y = y;
     this.baseX = this.x;
     this.baseY = this.y;
     // this.size = size;
     this.size = Math.random() * size + 1;
-    this.distanceFromMouse = distanceFromMouse;
     this.density = Math.random() * 30 + 1;
   }
   draw() {
@@ -58,7 +57,7 @@ class Particle {
     const dy = mouse.y - this.y;
     const distance = Math.hypot(dx, dy);
 
-    if (distance < this.distanceFromMouse) {
+    if (distance < mouse.radius) {
       this.size = 30;
     } else {
       this.size = 3;
