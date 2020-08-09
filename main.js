@@ -64,15 +64,14 @@ class Particle {
       this.y += forceDirectionY;
     } else {
       this.x -= forceDirectionX;
-      if (this.x <= 0 || this.x >= canvas.width)
-        this.x = (Math.random() * canvas.width + 1) | 0;
-
       this.y -= forceDirectionY;
-      if (this.y <= 0 || this.y >= canvas.height)
-        this.y = (Math.random() * canvas.height + 1) | 0;
-
       // if (this.x >= canvas.clientWidth) this.x = this.y -= forceDirectionY;
     }
+    if (this.x <= 0 || this.x >= canvas.width)
+      this.x = (Math.random() * canvas.width + 1) | 0;
+
+    if (this.y <= 0 || this.y >= canvas.height)
+      this.y = (Math.random() * canvas.height + 1) | 0;
   }
 }
 // new Particle(150, 100).draw();
