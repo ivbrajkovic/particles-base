@@ -64,18 +64,11 @@ class Particle {
 
     if (distance < mouse.radius) {
       this.x -= directionX;
-      this.y -= directionY;
+      this.y -= forceDirectionY;
     } else {
-      this.x += forceDirectionX * forceDirectionX;
-      this.y += forceDirectionY * forceDirectionY;
-      // if (this.x >= canvas.clientWidth) this.x = this.y -= forceDirectionY;
+      this.x = this.baseX;
+      this.y = this.baseY;
     }
-
-    if (this.x <= 0 || this.x >= canvas.width)
-      this.x = Math.random() * canvas.width + 1;
-
-    if (this.y <= 0 || this.y >= canvas.height)
-      this.y = Math.random() * canvas.height + 1;
   }
 }
 // new Particle(150, 100).draw();
