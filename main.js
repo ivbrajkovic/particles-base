@@ -57,11 +57,21 @@ class Particle {
     const dx = mouse.x - this.x;
     const dy = mouse.y - this.y;
     const distance = Math.hypot(dx, dy) | 0;
-
+    const forceDirectionX = dx / distance;
+    const forceDirectionY = dy / distance;
     if (distance < this.distanceFromMouse) {
-      this.size = 30;
+      this.x += forceDirectionX;
+      this.y += forceDirectionY;
     } else {
-      this.size = 3;
+      this.x -= forceDirectionX;
+      if (this.x <= 0 || this.x >= canvas.width)
+        this.x = (Math.random() * canvas.width + 1) | 0;
+
+      this.y -= forceDirectionY;
+      if (this.y <= 0 || this.y >= canvas.height)
+        this.y = (Math.random() * canvas.height + 1) | 0;
+
+      // if (this.x >= canvas.clientWidth) this.x = this.y -= forceDirectionY;
     }
   }
 }
@@ -69,7 +79,7 @@ class Particle {
 
 // init particles
 let particleArray = [];
-function init(width = window.innerWidth, height = window.innerHeight) {
+function init(width = canvas.width, height = canvas.height) {
   particleArray = [];
   for (let i = 0; i < 500; i++) {
     const x = (Math.random() * width + 1) | 0;
