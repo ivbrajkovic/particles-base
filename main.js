@@ -42,9 +42,9 @@ class Particle {
     this.baseX = this.x;
     this.baseY = this.y;
     // this.size = size;
-    this.size = (Math.random() * size + 1) | 0;
+    this.size = Math.random() * size + 1;
     this.distanceFromMouse = distanceFromMouse;
-    this.density = (Math.random() * 30 + 1) | 0;
+    this.density = Math.random() * 30 + 1;
   }
   draw() {
     ctx.fillStyle = "white";
@@ -56,7 +56,7 @@ class Particle {
   update() {
     const dx = mouse.x - this.x;
     const dy = mouse.y - this.y;
-    const distance = Math.hypot(dx, dy) | 0;
+    const distance = Math.hypot(dx, dy);
 
     if (distance < this.distanceFromMouse) {
       this.size = 30;
@@ -72,8 +72,8 @@ let particleArray = [];
 function init(width = window.innerWidth, height = window.innerHeight) {
   particleArray = [];
   for (let i = 0; i < 500; i++) {
-    const x = (Math.random() * width + 1) | 0;
-    const y = (Math.random() * height + 1) | 0;
+    const x = Math.random() * width + 1;
+    const y = Math.random() * height + 1;
     particleArray.push(new Particle(x, y));
   }
 }
