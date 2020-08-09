@@ -55,17 +55,19 @@ class Particle {
   update() {
     const dx = mouse.x - this.x;
     const dy = mouse.y - this.y;
-    // const distance = Math.hypot(dx, dy);
     const distance = Math.hypot(dx, dy);
     const forceDirectionX = dx / distance;
     const forceDirectionY = dy / distance;
+    const force = (mouse.radius - distance) / mouse.radius;
+    const directionX = forceDirectionX * force * this.density;
+    const directionY = forceDirectionY * force * this.density;
 
     if (distance < mouse.radius) {
-      this.x += forceDirectionX;
-      this.y += forceDirectionY;
+      this.x -= directionX;
+      this.y -= directionY;
     } else {
-      this.x -= forceDirectionX * 50;
-      this.y -= forceDirectionY * 20;
+      this.x += forceDirectionX * forceDirectionX;
+      this.y += forceDirectionY * forceDirectionY;
       // if (this.x >= canvas.clientWidth) this.x = this.y -= forceDirectionY;
     }
 
