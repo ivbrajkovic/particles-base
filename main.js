@@ -64,14 +64,19 @@ class Particle {
 
     if (distance < mouse.radius) {
       this.x -= directionX;
-      this.y -= forceDirectionY;
+      this.y -= directionY;
     } else {
-      this.x = this.baseX;
-      this.y = this.baseY;
+      if (this.x !== this.baseX) {
+        const dx = this.x - this.baseX;
+        this.x -= dx / 10;
+      }
+      if (this.y !== this.baseY) {
+        const dy = this.y - this.baseY;
+        this.y -= dy / 10;
+      }
     }
   }
 }
-// new Particle(150, 100).draw();
 
 // init particles
 let particleArray = [];
@@ -93,6 +98,28 @@ function animate() {
     particleArray[i].draw();
     particleArray[i].update();
   }
+  connect();
   requestAnimationFrame(animate);
 }
 animate();
+
+// connect particles
+function connect(distanceThreshold = 50) {
+  for (let i = 0; i < particleArray.length; i++) {
+    for (let j = i; j < particleArray.length; j++) {
+      const dx = particleArray[i].x - particleArray[j].x;
+      const dy = particleArray[i].y - particleArray[j].y;
+      const distance = Math.hypot(dx, dy);
+      const opacityValue = 1 - distance / distanceThreshold;
+
+      if (distance < distanceThreshold) {
+        ctx.strokeStyle = `rgba(255,255,255,${opacityValue})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(particleArray[i].x, particleArray[i].y);
+        ctx.lineTo(particleArray[j].x, particleArray[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+}
