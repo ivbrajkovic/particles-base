@@ -26,13 +26,24 @@ const mouse = {
   x: null,
   y: null,
   radius: 150,
+  // minRadius: 0,
+  // maxRadius: 150,
 };
+
+// change radius
+let changing = false;
+function increseMouseRadius(value) {
+  if (mouse.radius < mouse.maxRadius) mouse.radius += value;
+}
+function decreseMouseRadius(value) {
+  if (mouse.radius > mouse.minRadius) mouse.radius -= value;
+}
 
 // mousemove envent listener
 window.addEventListener("mousemove", (e) => {
   mouse.x = e.x;
   mouse.y = e.y;
-  // console.log("mouse", mouse);
+  // increseMouseRadius(10);
 });
 
 class Particle {
@@ -76,6 +87,16 @@ class Particle {
       }
     }
   }
+  move() {
+    const x = Math.random() * 10 + 1;
+    const y = Math.random() * 10 + 1;
+
+    if (this.baseX > 1 && x < 6) this.baseX -= 1;
+    else if (this.baseX < canvas.width) this.baseX += 1;
+
+    if (this.baseY > 1 && y < 6) this.baseY -= 1;
+    else if (this.baseY < canvas.height) this.baseY += 1;
+  }
 }
 
 // init particles
@@ -97,8 +118,10 @@ function animate() {
   for (let i = 0; i < particleArray.length; i++) {
     particleArray[i].draw();
     particleArray[i].update();
+    particleArray[i].move();
   }
   connect();
+  // decreseMouseRadius(1);
   requestAnimationFrame(animate);
 }
 animate();
@@ -120,6 +143,25 @@ function connect(distanceThreshold = 50) {
         ctx.lineTo(particleArray[j].x, particleArray[j].y);
         ctx.stroke();
       }
+    }
+  }
+}
+
+// connect particles
+function connect2(distanceThreshold = 150) {
+  for (let i = 0; i < particleArray.length; i++) {
+    const dx = particleArray[i].x - particleArray[i].baseX;
+    const dy = particleArray[i].y - particleArray[i].baseY;
+    const distance = Math.hypot(dx, dy);
+    const opacityValue = 1 - distance / distanceThreshold;
+
+    if (distance < distanceThreshold) {
+      ctx.strokeStyle = `rgba(255,255,255,${opacityValue})`;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(particleArray[i].x, particleArray[i].y);
+      ctx.lineTo(particleArray[i].baseX, particleArray[i].baseY);
+      ctx.stroke();
     }
   }
 }
